@@ -162,3 +162,45 @@ sequenceDiagram
 Див. папку VisitorDemo/ — консольний проект із реалізацією IVisitor, IElement, двома елементами та одним відвідувачем.
 
 ---
+
+## Concurrency Pattern: Lock
+
+Патерн **Lock** (м'ютекс) використовується для синхронізації доступу до спільних ресурсів у багатопотокових сценаріях. Він гарантує, що лише один потік виконує критичну секцію коду одночасно.
+
+### UML-діаграма класів
+
+```mermaid
+classDiagram
+    class SharedResource {
+      -_counter: int
+      +Increment(): void
+      +GetCount(): int
+    }
+
+    class LockDemo {
+      +RunDemo(): void
+    }
+
+    SharedResource o-- LockDemo : uses
+```
+
+### UML-діаграма послідовності
+
+```mermaid
+sequenceDiagram
+    participant T1 as Thread1
+    participant T2 as Thread2
+    participant Res as SharedResource
+
+    T1->>Res: Lock, Increment()
+    Res-->>T1: Unlock
+
+    T2->>Res: Lock, Increment()
+    Res-->>T2: Unlock
+```
+
+### Демонстраційний код
+
+Папка LockDemo/ містить консольний проект, де два потоки безпечним способом інкрементують спільний лічильник використовуючи lock.
+
+---
