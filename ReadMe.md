@@ -97,3 +97,68 @@ sequenceDiagram
 Див. папку CompositeDemo/ — консольний проект із реалізацією IComponent, Leaf, Composite та прикладом використання в Program.cs.
 
 ---
+
+## Behavioral Pattern: Hierarchical Visitor
+
+Патерн **Visitor** дозволяє додавати нові операції над елементами об'єктної ієрархії, не змінюючи самі класи цих елементів. У варіанті "Hierarchical Visitor" ми демонструємо, як один відвідувач може обробляти різні підкласи елементів.
+
+### UML-діаграма класів
+
+```mermaid
+classDiagram
+    class IVisitor {
+      <<interface>>
+      +VisitElementA(a: ElementA)
+      +VisitElementB(b: ElementB)
+    }
+
+    class IElement {
+      <<interface>>
+      +Accept(v: IVisitor)
+    }
+
+    class ElementA {
+      +Accept(v: IVisitor)
+      +OperationA()
+    }
+
+    class ElementB {
+      +Accept(v: IVisitor)
+      +OperationB()
+    }
+
+    class ConcreteVisitor {
+      +VisitElementA(a: ElementA)
+      +VisitElementB(b: ElementB)
+    }
+
+    IVisitor <|.. ConcreteVisitor
+    IElement <|.. ElementA
+    IElement <|.. ElementB
+    ElementA o-- IVisitor : accepts
+    ElementB o-- IVisitor : accepts
+```
+
+### UML-діаграма послідовності
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant A as ElementA
+    participant B as ElementB
+    participant V as ConcreteVisitor
+
+    Client->>A: Accept(V)
+    A->>V: VisitElementA(this)
+    V-->>A: [оброблено]
+
+    Client->>B: Accept(V)
+    B->>V: VisitElementB(this)
+    V-->>B: [оброблено]
+```
+
+### Демонстраційний код
+
+Див. папку VisitorDemo/ — консольний проект із реалізацією IVisitor, IElement, двома елементами та одним відвідувачем.
+
+---
